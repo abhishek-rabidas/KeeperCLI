@@ -7,17 +7,19 @@ import (
 	"strings"
 )
 
+var path string = "C:\\Projects\\KeeperCLI\\stack.txt"
+
 func main() {
 	command := os.Args[1]
 
 	switch command {
 	case "push":
-		note := os.Args[2]
-		if len(note) == 0 {
+		if len(os.Args) != 3 {
 			panic("No note provided")
 		}
+		note := os.Args[2]
 		push(note)
-		fmt.Println("Note updated")
+		fmt.Println("Notes updated")
 		break
 	case "pop":
 		pop()
@@ -41,7 +43,7 @@ func push(note string) {
 }
 
 func pop() {
-	file, err := os.OpenFile("./stack.txt", os.O_RDONLY, 0644)
+	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -63,7 +65,7 @@ func pop() {
 }
 
 func show() {
-	file, err := os.OpenFile("./stack.txt", os.O_RDONLY, 0644)
+	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +77,7 @@ func show() {
 }
 
 func clear() {
-	file, err := os.OpenFile("./stack.txt", os.O_WRONLY|os.O_TRUNC, 0644)
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +85,7 @@ func clear() {
 }
 
 func appendFile(note string) {
-	file, err := os.OpenFile("./stack.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
