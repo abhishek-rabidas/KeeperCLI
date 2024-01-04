@@ -42,6 +42,7 @@ func main() {
 		ShowHelp()
 		break
 	default:
+		fmt.Println("Incorrect command, run [notes help] for seeing all the commands")
 		os.Exit(-1)
 
 	}

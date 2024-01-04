@@ -26,7 +26,13 @@ func Pop() {
 
 	lines := strings.Split(content, "\n")
 
+	if len(lines) == 1 {
+		log.Fatal("No notes")
+		return
+	}
+
 	lines = lines[:len(lines)-2]
+
 	Clear()
 
 	for _, line := range lines {
