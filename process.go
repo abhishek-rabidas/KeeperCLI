@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 )
@@ -14,7 +15,8 @@ func Push(note string) {
 func Pop() {
 	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal("No Notes")
+		return
 	}
 	defer file.Close()
 
@@ -36,7 +38,8 @@ func Pop() {
 func Show() {
 	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal("No Notes")
+		return
 	}
 	defer file.Close()
 
@@ -48,7 +51,8 @@ func Show() {
 func Clear() {
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal("No Notes")
+		return
 	}
 	defer file.Close()
 }
@@ -56,10 +60,20 @@ func Clear() {
 func appendFile(note string) {
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal("Error opening notes")
+		return
 	}
 	defer file.Close()
 
 	file.WriteString(note + "\n")
 
+}
+
+func ShowHelp() {
+	fmt.Println("CLI NOTE KEEPING APPLICATION")
+	fmt.Println("Developed by : Abhishek Kumar Rabidas")
+	fmt.Println("1. push [enter your note] : To add a new note")
+	fmt.Println("2. clear : To clear all the notes")
+	fmt.Println("3. pop : To remove the last note")
+	fmt.Println("4. show : To show all the notes")
 }

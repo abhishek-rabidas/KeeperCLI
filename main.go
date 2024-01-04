@@ -5,9 +5,17 @@ import (
 	"os"
 )
 
-var path string = "C:\\Projects\\KeeperCLI\\stack.txt"
+var path string
 
 func main() {
+	homeDir, err := os.UserHomeDir()
+
+	if err != nil {
+		panic(err)
+	}
+
+	path = homeDir + "\\notes.txt"
+
 	command := os.Args[1]
 
 	switch command {
@@ -29,6 +37,9 @@ func main() {
 		break
 	case "show":
 		Show()
+		break
+	case "help":
+		ShowHelp()
 		break
 	default:
 		os.Exit(-1)
