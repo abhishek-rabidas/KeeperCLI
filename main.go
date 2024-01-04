@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -12,13 +13,19 @@ func main() {
 	switch command {
 	case "push":
 		note := os.Args[2]
+		if len(note) == 0 {
+			panic("No note provided")
+		}
 		push(note)
+		fmt.Println("Note updated")
 		break
 	case "pop":
 		pop()
+		fmt.Println("Removed last note")
 		break
 	case "clear":
 		clear()
+		fmt.Println("Cleared all notes")
 		break
 	case "show":
 		show()
@@ -30,12 +37,29 @@ func main() {
 }
 
 func push(note string) {
-	appendFile(note)
-	fmt.Println("Note updated")
+	appendFile("-> " + note)
 }
 
 func pop() {
-	fmt.Println("pop")
+	file, err := os.OpenFile("./stack.txt", os.O_RDONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	byteContent, _ := io.ReadAll(file)
+
+	content := string(byteContent)
+
+	lines := strings.Split(content, "\n")
+
+	lines = lines[:len(lines)-2]
+	clear()
+
+	for _, line := range lines {
+		appendFile(line)
+	}
+
 }
 
 func show() {
@@ -56,8 +80,6 @@ func clear() {
 		panic(err)
 	}
 	defer file.Close()
-
-	fmt.Println("Cleared all notes")
 }
 
 func appendFile(note string) {
@@ -67,6 +89,6 @@ func appendFile(note string) {
 	}
 	defer file.Close()
 
-	file.WriteString("-> " + note + "\n")
+	file.WriteString(note + "\n")
 
 }
