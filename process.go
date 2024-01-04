@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"strings"
 )
@@ -15,7 +14,7 @@ func Push(note string) {
 func Pop() {
 	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
-		log.Fatal("No Notes")
+		fmt.Println("No Notes")
 		return
 	}
 	defer file.Close()
@@ -27,8 +26,8 @@ func Pop() {
 	lines := strings.Split(content, "\n")
 
 	if len(lines) == 1 {
-		log.Fatal("No notes")
-		return
+		fmt.Println("No notes")
+		os.Exit(-1)
 	}
 
 	lines = lines[:len(lines)-2]
@@ -44,8 +43,8 @@ func Pop() {
 func Show() {
 	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
 	if err != nil {
-		log.Fatal("No Notes")
-		return
+		fmt.Println("No Notes")
+		os.Exit(-1)
 	}
 	defer file.Close()
 
@@ -57,8 +56,8 @@ func Show() {
 func Clear() {
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_TRUNC, 0644)
 	if err != nil {
-		log.Fatal("No Notes")
-		return
+		fmt.Println("No Notes")
+		os.Exit(-1)
 	}
 	defer file.Close()
 }
@@ -66,8 +65,8 @@ func Clear() {
 func appendFile(note string) {
 	file, err := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatal("Error opening notes")
-		return
+		fmt.Println("Error opening notes")
+		os.Exit(-1)
 	}
 	defer file.Close()
 
