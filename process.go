@@ -100,7 +100,7 @@ func RewriteNotes(selected string) {
 
 	for _, note := range lines {
 		if note == selected {
-			continue
+			newNotes = append(newNotes, note+" [DONE]")
 		} else {
 			newNotes = append(newNotes, note)
 		}

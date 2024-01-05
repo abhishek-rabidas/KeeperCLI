@@ -88,7 +88,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func (m model) View() string {
 	if m.choice != "" {
 		RewriteNotes(m.choice)
-		return quitTextStyle.Render(fmt.Sprintf("[%s] has been removed.", m.choice))
+		return quitTextStyle.Render(fmt.Sprintf("[%s] has been marked DONE.", m.choice))
 	}
 	if m.quitting {
 		return quitTextStyle.Render("Nothing to remove? That’s cool.")
