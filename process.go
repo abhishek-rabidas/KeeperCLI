@@ -8,7 +8,7 @@ import (
 )
 
 func Push(note string) {
-	appendFile("-> " + note)
+	appendFile(note)
 }
 
 func Pop() {
@@ -50,7 +50,20 @@ func Show() {
 
 	byteContent, _ := io.ReadAll(file)
 
-	fmt.Println(string(byteContent))
+	content := string(byteContent)
+
+	lines := strings.Split(content, "\n")
+
+	if len(lines) == 1 {
+		fmt.Println("No notes")
+		os.Exit(-1)
+	}
+
+	lines = lines[:len(lines)-1]
+
+	ShowList(lines)
+
+	//fmt.Println(string(byteContent))
 }
 
 func Clear() {
@@ -60,6 +73,44 @@ func Clear() {
 		os.Exit(-1)
 	}
 	defer file.Close()
+}
+
+func RewriteNotes(selected string) {
+	newNotes := make([]string, 0)
+
+	file, err := os.OpenFile(path, os.O_RDONLY, 0644)
+	if err != nil {
+		fmt.Println("No Notes")
+		os.Exit(-1)
+	}
+	defer file.Close()
+
+	byteContent, _ := io.ReadAll(file)
+
+	content := string(byteContent)
+
+	lines := strings.Split(content, "\n")
+
+	if len(lines) == 1 {
+		fmt.Println("No notes")
+		os.Exit(-1)
+	}
+
+	lines = lines[:len(lines)-1]
+
+	for _, note := range lines {
+		if note == selected {
+			continue
+		} else {
+			newNotes = append(newNotes, note)
+		}
+	}
+
+	Clear()
+
+	for _, line := range newNotes {
+		appendFile(line)
+	}
 }
 
 func appendFile(note string) {
